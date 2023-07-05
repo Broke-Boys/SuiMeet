@@ -18,7 +18,7 @@ Preserve privacy and anonymity, and don't be afraid to be banned because of your
 ## Code
 
 Since SuiMeet doesn't have a back-end part, it consists only of front-end and contract parts. Instructions for starting and additional information can be found at
-- Front-end code: [sdk/](sdk/)
+- Front-end code: [frontend/](frontend/)
 - Sui Move code: [sui/](sui/)
 
 ---
