@@ -4,7 +4,7 @@
 **SuiMeet** is a fully decentalized on-chain social network system on the Sui blockchain.
 
 
-![SuiMeet main page](https://i.ibb.co/L9x790p/2023-07-05-11-41-31.jpg)
+![SuiMeet main page](https://i.ibb.co/j5TMNB9/tg-image-2728503933.jpg)
 
 ## Key features
 ### 1. Each user truly own their profiles, posts and comments
