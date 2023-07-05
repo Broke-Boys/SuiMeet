@@ -1,5 +1,4 @@
 # SuiMeet
-[[`Demo`](https://sui-meet.surge.sh/sign-up)] [[`Video Demo`](https://drive.google.com/file/d/1txEfBU1cOg7fGIxyAe_Z2AtD3MuMSWgt/view?usp=sharing)] 
 
 **SuiMeet** is a fully decentalized on-chain social network system on the Sui blockchain.
 
