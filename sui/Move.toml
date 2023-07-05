@@ -1,0 +1,11 @@
+[package]
+name = "sui_meet"
+version = "0.0.1"
+authors = ["Broke Boys Cartel"]
+license = "Apache-2.0"
+
+[dependencies]
+Sui = { git = "https://github.com/MystenLabs/sui.git", subdir = "crates/sui-framework/packages/sui-framework", rev = "devnet" }
+
+[addresses]
+sui_meet = "0x0"
