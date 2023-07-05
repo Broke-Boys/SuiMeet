@@ -1,0 +1,13 @@
+button{
+    background-color: #FE754D;
+    outline: none;
+    border: none;
+    border-radius: 30px;
+    padding: 12px;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.btn__disabled{
+    background-color:#2D2A40;
+}

@@ -1,0 +1,33 @@
+.tendention__container{
+    background-color: #25213B;
+    padding: 10px 20px;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.tendention__name{
+    color: #504D62;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.tendention__value{
+    font-size: 32px;
+    font-weight: bold;
+}
+
+.tendention_percent{
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.bold{
+    font-weight: bold;
+}
+.think{
+    color: #504D62;
+    font-size: 12px;
+}

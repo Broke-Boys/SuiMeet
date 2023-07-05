@@ -1,0 +1,31 @@
+.profile>img{
+    border-radius: 50%;
+}
+
+.profile{
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    
+}
+
+.profile-creds>.name{
+    font-weight: bold;
+
+}
+
+.profile-creds>.tag{
+    color: #8789A7;
+}
+
+.people__container{
+    color: #504D62;
+    font-weight: bold;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.profile__cp{
+    cursor: pointer;
+    margin-top: 10px;
+}

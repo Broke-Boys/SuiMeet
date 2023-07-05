@@ -1,0 +1,11 @@
+.left-sidebar__container{
+    padding-right: 70px;
+    flex-direction: column;
+    gap: 10px;
+    height: 95vh;
+    overflow: scroll;
+}
+
+.profile-sidebar{
+    margin-top: 20px;
+}

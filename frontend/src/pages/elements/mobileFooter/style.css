@@ -1,0 +1,10 @@
+.mobile-footer__container{
+    position: absolute;
+    bottom: 0px;
+    background-color: #242038;
+    width: calc(100% - 40px);
+    left: 0px;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between; 
+}

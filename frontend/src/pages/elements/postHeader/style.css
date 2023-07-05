@@ -1,0 +1,34 @@
+.post-header__container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+}
+.post-header__container>span{
+    color: #504D62;
+    font-weight: bold;
+}
+
+.post-header__btns{
+    display: flex;
+    gap: 5px;
+    flex-direction: row;
+}
+
+.post-header__btn{
+    color: #504D62;
+    font-weight: bold;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.post-header__btn-active{
+    color: white;
+    background-color: #FE754D;
+    border-radius: 20px;
+}
+
+.header__vertical{
+    flex-direction: column!important;
+}

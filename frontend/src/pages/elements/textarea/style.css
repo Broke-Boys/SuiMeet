@@ -1,0 +1,24 @@
+textarea{
+    background-color: #25213B;
+    outline: none;
+    border: none;
+    height: 70px!important;
+    display: block;
+    width: calc(100% - 40px); 
+    margin-top: 10px;
+    resize: none;
+}
+textarea::placeholder{
+    color: #8789A7;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.ta__container{
+    display: flex;
+    gap: 20px;
+    background-color: #25213B;
+    padding: 20px;
+    border-radius: 20px;
+
+}

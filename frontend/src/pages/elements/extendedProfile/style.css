@@ -1,0 +1,26 @@
+.extended-profile__container{
+    display: flex;
+    min-width: 600px;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+    background-color: #242038;
+    border-radius: 20px;
+}
+
+@media only screen and (max-width: 700px) {
+    .extended-profile__container {
+        min-width: 280px;
+    }
+}
+
+.extended-profile__head{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+}
+
+.timing{
+
+}
