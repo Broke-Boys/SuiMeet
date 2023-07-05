@@ -2,7 +2,7 @@
 
 Current version of the contract is located on  
 - network: **testnet**   
-- address: `0x5667d7d96711acf49f1df3f1b457070947c60b5a9ecd0c2ee6bd33d12f9eea5b`
+- address: `0x7fb0e470fc784fbaa6e806d0b4d9781ab0a5a19dc363c8ae484073e520852aba`
 
 ## Publish the package
 
