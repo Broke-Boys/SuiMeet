@@ -15,10 +15,16 @@ SuiMeet is a fully on-chain app. This property ensures it's completely transpare
 ### 4. Censorship-resistance
 Preserve privacy and anonymity, and don't be afraid to be banned because of your thoughts.
 
+## Feature Roadmap
+- Providing sponsored transactions for new Web3 users (to facilitate understanding of gas fees)
+- Incentive programs (like post-to-earn, view-to-earn, and others)
+- A popular feed (which requires computations that cannot be done on-chain or on the front-end)
+
+
 ## Code
 
 Since SuiMeet doesn't have a back-end part, it consists only of front-end and contract parts. Instructions for starting and additional information can be found at
-- Front-end code: [sdk/](sdk/)
+- Front-end code: [frontend/](frontend/)
 - Sui Move code: [sui/](sui/)
 
 ---
