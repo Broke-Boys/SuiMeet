@@ -8,9 +8,9 @@ export const getFollowers = async (
           id: profileAddr,
           options: { showContent: true },
         });
-        console.log(objects);
+        //console.log(objects);
         const FOLLOWERS_REGISTRY_ADDRESS = (objects as any).data.content.fields.followers;
-        console.log(FOLLOWERS_REGISTRY_ADDRESS);
+        //console.log(FOLLOWERS_REGISTRY_ADDRESS);
         
         objects = await provider.getObject({
           id: FOLLOWERS_REGISTRY_ADDRESS,

@@ -30,7 +30,7 @@ export const makeDonate = async (
                 txb.pure(amount),
             ]
         );
-        console.log(coin[0])
+        //console.log(coin[0])
 
 
         // let objects = await provider.getCoins({
@@ -40,16 +40,16 @@ export const makeDonate = async (
         // await new Promise(r => setTimeout(r, 2000));
         // var COIN_ADDR = ''
         // for (let i=0;i<objects.data.length;i++){
-        //     console.log((objects as any).data)
+        //     //console.log((objects as any).data)
         //     if ((objects as any).data[i].balance == amount){
         //         COIN_ADDR = objects.data[i].coinObjectId;
-        //         console.log(COIN_ADDR)
+        //         //console.log(COIN_ADDR)
         //     }
         // }
         // const COIN_ADDRESS = objects.data[0].coinObjectId;
         
-        //console.log(postAddr, REGISTRY_ADDRESS()!, COIN_ADDRESS, amount)
-        console.log(coin)
+        ////console.log(postAddr, REGISTRY_ADDRESS()!, COIN_ADDRESS, amount)
+        //console.log(coin)
         txb.moveCall({
           target: `${CONTRACT_ADDRESS}::meet::make_donate`,
           arguments: [

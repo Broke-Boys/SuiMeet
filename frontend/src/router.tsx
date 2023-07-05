@@ -1,7 +1,8 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter,  } from "react-router-dom";
 import { Main, ProfileView } from "./pages/desktop/main";
 import { Login, SignUp } from "./pages/desktop/signUp";
 import { Profile } from "./pages/desktop/profile/profile";
+import App from './App'
 
 
 const router = createBrowserRouter([
@@ -28,6 +29,10 @@ const router = createBrowserRouter([
     {
         'path': '/profile/:action',
         'element': <Main />
+    },
+    {
+        'path': '',
+        'element': <App />
     }
 ])
 

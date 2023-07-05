@@ -14,7 +14,7 @@ export const allPostDetails = async (
         for (var j = 0; j < (objects as any).length; ++j) {
             var object = (objects as any)[j];
             let post_fields = (object as any).data.content.fields;
-            console.log(post_fields)
+            //console.log(post_fields)
             var comms = [] as any
             try {
                 comms = await provider.multiGetObjects({
@@ -39,7 +39,7 @@ export const allPostDetails = async (
             const file_link = message.files;
             const text = message.text;
             const timestamp = message.timestamp;
-            console.log(message, "msg!!")
+            //console.log(message, "msg!!")
             res.push(
                 {
                     ...message, 
@@ -56,7 +56,7 @@ export const allPostDetails = async (
         } 
         return res
     } catch (e) {
-        console.log(e)
+        //console.log(e)
     }
 }
 
@@ -68,7 +68,7 @@ export const postDetail = async (postAddr: string) => {
           options: { showContent: true },
           }
         );
-        console.log(objects);
+        //console.log(objects);
         
         let post_fields = (objects as any).data.content.fields;
         
@@ -84,7 +84,7 @@ export const postDetail = async (postAddr: string) => {
     
         let likes_amount = post_fields.likes.fields.contents.length;
         var donated = (parseInt(post_fields.donated) / (10 ** 9)).toFixed(1);
-        console.log((parseInt(post_fields.donated) / (10 ** 9)).toFixed(1), "contents")
+        //console.log((parseInt(post_fields.donated) / (10 ** 9)).toFixed(1), "contents")
         var liked = post_fields.likes.fields.contents.includes(PROFILE_ADDR())
         objects =  await provider.getObject({
           id: post_fields.message,

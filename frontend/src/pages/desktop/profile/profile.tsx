@@ -62,7 +62,7 @@ export const Profile: react.FC = () => {
 
     var followingsEnabled = !(PROFILE_ADDR() == addr);
 
-    console.log(followingsEnabled, addr)
+    //console.log(followingsEnabled, addr)
 
     var localAction = action ? action : 'posts';
 

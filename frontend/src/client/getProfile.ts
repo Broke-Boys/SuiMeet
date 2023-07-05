@@ -10,7 +10,7 @@ import { provider } from './config';
 
 export const getProfile = async (profileAddress: string) => {
     try {
-        console.log(profileAddress)
+        //console.log(profileAddress)
         const objects = await provider.getObject({
           id: profileAddress,
           options: { showContent: true },

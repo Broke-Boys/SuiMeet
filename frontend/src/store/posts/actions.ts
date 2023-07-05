@@ -9,9 +9,9 @@ import { allPostDetails } from '../../client/postDetail';
 export const getPostsAction = createAsyncThunk(
     'posts/getPostAction',
     async () => {
-        console.log("Fuuuck")
+        //console.log("Fuuuck")
         var feeds = await getFeed(5, true);
-        console.log(feeds)
+        //console.log(feeds)
         return feeds;
     }
 )
@@ -44,7 +44,7 @@ export const createPostAction = createAsyncThunk(
         );
         await new Promise(r => setTimeout(r, 2000));
         var posts = await authorPosts(PROFILE_ADDR()!, 1);
-        console.log(posts)
+        //console.log(posts)
         var detail = await blockchainPostAdaptee(
             (await allPostDetails(
                 [posts![0]]

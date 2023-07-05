@@ -27,11 +27,11 @@ export const getProfilePostsAction = createAsyncThunk(
     async (
         profileAddr: string
     ) => {
-        console.log('profile posts')
+        //console.log('profile posts')
         var postDetails = await authorPosts(profileAddr, 5);
-        console.log(postDetails)
+        //console.log(postDetails)
         postDetails = await allPostDetails((postDetails) as any);
-        console.log(postDetails)
+        //console.log(postDetails)
         var mapped = []
         for (var i = 0; i < postDetails!.length; ++i) {
             mapped.push(await blockchainPostAdaptee(postDetails![i]))
@@ -45,9 +45,9 @@ export const getFollowersAction = createAsyncThunk(
     async (
         profileAddr: string
     ) => {
-        console.log('followers')
+        //console.log('followers')
         var followers = (await getFollowers(profileAddr) as any)
-        console.log(followers, 'followers')
+        //console.log(followers, 'followers')
         return (await getFollowers(profileAddr) as any)?.map(dataFullProfileAdaptee);
     }
 )

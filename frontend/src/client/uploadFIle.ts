@@ -7,6 +7,6 @@ export const uploadFile = async (file: File) => {
     
     var cid = await storage.put([file]);
     var link = `https://${cid}.ipfs.w3s.link/${file.name.replaceAll(' ', '%20')}`
-    console.log(link);
+    //console.log(link);
     return link
 }

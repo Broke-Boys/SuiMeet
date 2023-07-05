@@ -9,7 +9,7 @@ import { PostHeader } from '../../elements/postHeader';
 import { Post, imgCondition } from '../../elements/post';
 import { Image } from '../../elements/icons/image';
 import { File } from '../../elements/icons/file';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { ExtendedProfile } from '../../elements/extendedProfile';
 import { getFollowings } from '../../../client/getFollowings';
 import { useWalletKit } from '@mysten/wallet-kit';
@@ -83,7 +83,7 @@ export const PostCreation: react.FC<IPostCreation> = (props) => {
     var startImages: string[] = [];
     var startFiles: string[] = [];
     
-    console.log(props.postId, posts)
+    //console.log(props.postId, posts)
     if (props.postId) {
         post = posts.filter(e => e.messageAddr == props.postId)[0];
         startImages = post.file.split(';').filter(imgCondition);
@@ -312,7 +312,7 @@ export const ProfileView: react.FC = () => {
         )
     }
 
-    console.log(posts);
+    //console.log(posts);
 
     return <>
         <div className="post-header__container">
@@ -528,6 +528,14 @@ export const Main: react.FC = () => {
         'subs': <Subs />
     }
     const {action} = useParams();
+    const navigate = useNavigate();
+    
+    if (!localStorage.getItem('profileAddr')) {
+        setTimeout(() => {
+            navigate('/sign-up')
+        }, 200)
+        
+    }
 
     return <div className='main__container'>
         <div className="right-sidebar__media">

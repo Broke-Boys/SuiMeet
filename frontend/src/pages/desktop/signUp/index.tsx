@@ -17,7 +17,7 @@ import { IDataShortProfile, getSuggestedProfiles } from '../../../service/getSug
 import { follow } from '../../../client/follow';
 import { unfollow } from '../../../client/unfollow';
 import { Puff } from 'react-loader-spinner';
-import {Avatar} from 'antd';
+import {Avatar, message} from 'antd';
 
 
 interface ISteps{
@@ -63,6 +63,7 @@ interface IShortProfileAdd extends IDataShortProfile{
 const ShortProfileAdd: react.FC<IShortProfileAdd> = (props) => {
     const {signAndExecuteTransactionBlock} = useWalletKit();
     const [active, setActive] = react.useState(props.active);
+
     const activeClass = active ? 'active' : ''
     return <div className='short-profile_btn__container'>
         <ShortProfile 
@@ -95,6 +96,8 @@ export const SignUp: react.FC = () => {
     const [name, setName] = react.useState('');
     const [image, setImage] = react.useState('');
     const [imageLoaded, setImageIsLoaded] = react.useState(false);
+    const [messageApi, contextHolder] = message.useMessage();
+
     
     const queried = react.useRef(false);
     const [suggestedPeople, setSuggestedPeople] = react.useState<IDataShortProfile[]>([]);
@@ -119,7 +122,13 @@ export const SignUp: react.FC = () => {
                     content={"Sign up"}
                     className=''
                     onClick={() => {
-                        setCurrentStep(1);
+                        if (name.length) setCurrentStep(1);
+                        else {
+                            messageApi.open({
+                                content: 'Please enter name',
+                                type: 'error'
+                            })
+                        }
                     }}
                 />,
                 <div className="or__block">
@@ -149,7 +158,10 @@ export const SignUp: react.FC = () => {
                     content={'Continute'}
                     className='cont-btn'
                     onClick={() => {
-                        setCurrentStep(2);
+                        if (currentAccount?.address) setCurrentStep(2);
+                        else {
+                            messageApi.error('Please connect your wallet')
+                        }
                     }}
                 />
             ]}
@@ -198,6 +210,10 @@ export const SignUp: react.FC = () => {
                     content={"Next"}
                     className='login_btn'
                     onClick={() => {
+                        if (!image.length) {
+                            messageApi.error('Please upload avatar')
+                            return;
+                        }
                         createProfile(
                             signAndExecuteTransactionBlock,
                             name,
@@ -234,6 +250,7 @@ export const SignUp: react.FC = () => {
     ]
 
     return <div className='sign-up__container'>
+        {contextHolder}
         <div className='decoration'>
             <Decoration />
         </div>
@@ -250,7 +267,9 @@ export const SignUp: react.FC = () => {
 export const Login: react.FC = () => {
     const navigate = useNavigate();
     const {currentAccount} = useWalletKit();
+    const [messageApi, contextHolder] = message.useMessage();
     return <div className='sign-up__container'>
+        {contextHolder}
     <div className='decoration'>
         <Decoration />
     </div>
@@ -268,7 +287,17 @@ export const Login: react.FC = () => {
                     content={'Login'}
                     className='cont-btn'
                     onClick={async () => {
-                        await getProfileAddr(currentAccount?.address!)
+                        if (!currentAccount?.address) {
+                            messageApi.error("Please connect your wallet")
+                            return;
+                        }
+                        try{
+                            await getProfileAddr(currentAccount?.address!)
+                        } catch {
+                            messageApi.error("Wallet doesn't has profile object. Please Sign up first")
+                            return;
+                        }
+                        
                         navigate('/index');
                     }}
                 />,

@@ -41,7 +41,6 @@ export const createProfile = async (
         let url = photo_url
     
         const tx = new TransactionBlock();
-        console.log(PROFILE_REGISTRY_ADDRESS, name, url, SUI_CLOCK_OBJECT_ID)
         tx.moveCall({
           target: `${CONTRACT_ADDRESS}::meet::create_profile`,
           arguments: [

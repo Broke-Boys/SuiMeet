@@ -1,7 +1,17 @@
+import { useEffect } from 'react';
+import {useNavigate} from 'react-router-dom' 
+
 function App() {
-  return (
+    const navigate = useNavigate();
+    navigate('/index');
+
+    useEffect(() => {
+        navigate('/index')
+    })
+    
+    return (
     <div className="App">
-      hello world
+        asdf
     </div>
   );
 }

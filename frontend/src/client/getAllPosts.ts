@@ -22,10 +22,10 @@ export const getAllPosts = async (
           cursor: cursor
         });
     
-        // console.log(objects.data);
+        // //console.log(objects.data);
         let posts = [];
         for (let i=0;i<objects.data.length;i++){
-            console.log(objects.data[i])  
+            //console.log(objects.data[i])  
             posts.push(objects.data[i].parsedJson.post_id);
         }
         try {

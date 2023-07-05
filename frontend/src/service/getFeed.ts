@@ -34,14 +34,14 @@ export const commentAdaptee = async (comment: any) => {
     if (comment.data) {
         comment = comment.data.content.fields;
     }
-    console.log(comment)
+    //console.log(comment)
 
     var author = blockchainToStructAdaptee(
         await getProfile(comment.author)
     );
     var date = new Date(parseInt(comment.timestamp))
     var timestamp = timeAgo.format(date);
-    console.log("comment1")
+    //console.log("comment1")
     return {
         author,
         content: comment.text,
@@ -51,19 +51,19 @@ export const commentAdaptee = async (comment: any) => {
 }
 
 export const blockchainPostAdaptee = async (post: any) => {
-    console.log(post, "poooooost")
+    //console.log(post, "poooooost")
     var authorData = blockchainToStructAdaptee(
         await getProfile(post.author)
     );
-    console.log("post12")
+    //console.log("post12")
     var comments = [];
     for (var i = 0; i < post.comments.length; ++i) {
         comments.push(await commentAdaptee(post.comments[i]))
     }
-    console.log("post1234")
+    //console.log("post1234")
     var ts = new Date(parseInt(post.timestamp));
     var timestamp = timeAgo.format(ts);
-    console.log("post blyat")
+    //console.log("post blyat")
     return {
         author: authorData,
         addr: post.id.id,
@@ -90,18 +90,18 @@ export const getFeed = async (limit: number, first: boolean) => {
     localStorage.setItem('hasPage', JSON.stringify(hasPage));
 
     var posts = await allPostDetails(postsIds);
-    console.log(posts, "posts")
+    //console.log(posts, "posts")
     var newposts = []
 
     for (var i = 0; i < postsIds!.length; ++i) {
-        console.log(i, "fuck blyat")
+        //console.log(i, "fuck blyat")
         newposts!.push(
             await blockchainPostAdaptee(
                 posts![i]
             )
         );
-        console.log(i, "endfuck")
+        //console.log(i, "endfuck")
     }
-    console.log("new posts", newposts)
+    //console.log("new posts", newposts)
     return newposts;
 }

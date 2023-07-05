@@ -15,7 +15,6 @@ export const createPost = async (
     files: string,
     profileAddr: string
 ) => {
-    console.log(text, files, profileAddr);
     try{
         const tx = new TransactionBlock();
         tx.moveCall({
