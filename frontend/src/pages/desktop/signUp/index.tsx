@@ -220,6 +220,11 @@ export const SignUp: react.FC = () => {
                             image,
                             currentAccount?.address!
                         ).then((e) => {
+                            
+                            if (e.error) {
+                                messageApi.error('Something went wrong! make sure your wallet on testnet and sign up again!')
+                                return
+                            }
                             setCurrentStep(3);
                         });
                     }}

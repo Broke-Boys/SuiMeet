@@ -27,8 +27,9 @@ export const likePost = async (
         const result = await signAndExecuteTransactionBlock({
           transactionBlock: tx,
         });
-    
+        return {errors: false}
       } catch (error) {
         console.error(error);
+        return {errors: true}
       }
 }

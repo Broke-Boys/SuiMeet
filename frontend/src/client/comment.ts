@@ -34,9 +34,14 @@ export const commentPost = async (
         const result = await signAndExecuteTransactionBlock({
           transactionBlock: tx,
         });
-    
+        return {
+            error: false
+        }
       } catch (error) {
         console.error(error);
+        return {
+            error: true
+        }
       }
 }
 

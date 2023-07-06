@@ -15,14 +15,24 @@ export const makeDonate = async (
     walletAddr: string,
     signAndExecuteTransactionBlock: any,
     postAddr: string,
-    amount: number
+    amount: number,
 ) => {
     try {
 
         // Каждый коин SUI это 10**9 его единиц
         // Так что если на балансе допустим 0.7 SUI то это 700_000_000
         // const txb = new TransactionBlock();
-        
+        const objects = await (provider as any).getBalance({
+            owner: walletAddr,
+            options: { showContent: true },
+            }
+          );
+        console.log(objects);
+        if (parseInt(objects.totalBalance) < amount) {
+            return {
+                error: 2
+            }
+        }
         var txb = new TransactionBlock();
         const coin = txb.splitCoins(
             txb.gas,
@@ -70,9 +80,14 @@ export const makeDonate = async (
         //     'signature': sig2,
         //     'transactionBlock': tx as any
         // })
-    
+        return {
+            error: false
+        }
     } catch (error) {
         console.error(error);
+        return {
+            error: true
+        }
     }
 }
 

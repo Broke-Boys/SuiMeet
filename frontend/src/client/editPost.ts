@@ -27,8 +27,13 @@ export const editPost = async (
         const result = await signAndExecuteTransactionBlock({
           transactionBlock: tx,
         });
-    
+        return {
+            error: false
+        }
     } catch (error) {
         console.error(error);
+        return {
+            error: true
+        }
     }
 }

@@ -33,20 +33,20 @@ export const Select: react.FC<ISelect> = (props) => {
 interface IPostHeader{
     news: number;
     postTypeChange: (
-        type: "Most relevant" | "Rating" | "Popolarity"
+        type: "All" | "Followings"
     ) => void
 }
 
 export const PostHeader: react.FC<IPostHeader> = (props) => {
-    var types = ["Most relevant", "Rating", "Popolarity"]
+    var types = ["All", "Followings"]
 
     return <div className='post-header__container'>
-        {/* <span>
+        <span>
             {props.news} news
         </span>
         <Select 
             types={types}
             typeChange={props.postTypeChange as any}
-        /> */}
+        />
     </div>
 }

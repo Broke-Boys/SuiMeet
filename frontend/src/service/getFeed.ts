@@ -1,6 +1,7 @@
 import { getAllPosts } from "../client/getAllPosts"
 import { getProfile } from "../client/getProfile";
 import { allPostDetails, postDetail } from "../client/postDetail";
+import { rankPost } from "../client/rankPosts";
 import { dataFullProfileAdaptee } from "../pages/desktop/main";
 import { IDataShortProfile, blockchainToStructAdaptee } from "./getSuggestedProfiles";
 import TimeAgo from 'javascript-time-ago'
@@ -104,4 +105,15 @@ export const getFeed = async (limit: number, first: boolean) => {
     }
     //console.log("new posts", newposts)
     return newposts;
+}
+
+export const getFriendsFeed = async () => {
+    var posts = await rankPost();
+    var mappedPosts = [];
+    for (var i = 0; i < posts?.length!; ++i) {
+        mappedPosts.push(
+            await blockchainPostAdaptee(posts![i])
+        )
+    }
+    return mappedPosts;
 }

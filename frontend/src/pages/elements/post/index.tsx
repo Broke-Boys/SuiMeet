@@ -23,7 +23,7 @@ import { IDataFullProfile, PostCreation } from '../../desktop/main';
 import { makeDonate } from '../../../client/makeDonation';
 import {useSelector} from 'react-redux';
 import { profileSelector } from '../../../store/profile';
-import {Avatar} from 'antd';
+import {Avatar, message} from 'antd';
 
 
 const AuthorPost: react.FC<IDataShortProfile & {timestamp: string}> = (props) => {
@@ -48,14 +48,12 @@ interface IPostControll {
 }
 
 const PostControll: react.FC<IPostControll> = (props) => {
-    const [active, setActive] = react.useState(props.active);
-    const icon = props.activeIcon && active ? props.activeIcon : props.icon;
+    const icon = props.activeIcon && props.active ? props.activeIcon : props.icon;
     const onActive = props.activeHandle ? props.activeHandle : (e: boolean) => {}
     var disabledClass = props.disable ? 'post__disabled' : ''
     return <div className={'post-controll__container ' + disabledClass} onClick={() => {
         if (props.disable) return;
-        onActive(!active!);
-        setActive(!active);
+        onActive(!props.active);
     }}>
         {icon}
         <span>{props.value}</span>
@@ -109,11 +107,12 @@ const CommentSection: react.FC<ICommentSection> = (props) => {
                         props.postId,
                         value
                     ).then((e) => {
+                        if (e.error) return;
                         setComments([
                             {
                                 author: profile,
                                 content: value,
-                                timestamp: '',
+                                timestamp: 'Just now',
                                 id: ''
                             }
                         ].concat(comments))
@@ -135,12 +134,15 @@ interface ITipSection {
 
 const TipSection: react.FC<ITipSection> = (props) => {
     const [howMany, setHowMany] = react.useState(0.1);
+    const [messageApi, contextHolder] = message.useMessage();
     const {
         currentAccount, 
-        signAndExecuteTransactionBlock,         
+        signAndExecuteTransactionBlock,
+               
     } = useWalletKit();
     
     return <div className="centered">
+        {contextHolder}
         <div className='tip-section__container'>
             <div className="tip__head">
                 {howMany} Sui
@@ -163,8 +165,12 @@ const TipSection: react.FC<ITipSection> = (props) => {
                         currentAccount?.address!,
                         signAndExecuteTransactionBlock,
                         props.postAddr,
-                        howMany * (10 ** 9)
+                        howMany * (10 ** 9),
                     ).then((e) => {
+                        if (e.error == 2) {
+                            messageApi.error('You doesnt have balance to make this donation')
+                        }
+                        if (e.error) return;
                         props.localDonationsIncrementer(howMany)
                     })
                 }}
@@ -185,6 +191,9 @@ interface IPostControlls {
     localComments: number;
     localDonations: number;
     author: IDataFullProfile;
+    localLiked?: boolean;
+    localDonationOpen: boolean;
+    localCommentsOpen: boolean;
 }
 
 const PostControlls: react.FC<IPostControlls> = (props) => {
@@ -196,13 +205,14 @@ const PostControlls: react.FC<IPostControlls> = (props) => {
             activeIcon={<LikeEnabled />}
             value={props.likes + props.localLikes}
             activeHandle={props.setLike}
-            active={props.liked}
+            active={props.localLiked}
         />
         <PostControll 
             icon={<CommentDisabled />}
             value={props.comments.length + props.localComments}
             activeIcon={<CommentEnabled />}
             activeHandle={props.setComments}
+            active={props.localCommentsOpen}
         />
         {
             <PostControll 
@@ -211,6 +221,7 @@ const PostControlls: react.FC<IPostControlls> = (props) => {
                 activeIcon={<ArrowUpActive />}
                 activeHandle={props.setTip}
                 disable={!tip}
+                active={props.localDonationOpen}
             />
         }
         
@@ -225,7 +236,7 @@ const PostBody: react.FC<{content: string}> = (props) => {
 
 export var imgCondition = (e: string) => e.endsWith('.jpg') || 
 e.endsWith('.png') || 
-e.endsWith('.jpeg')
+e.endsWith('.jpeg') || e.length
 
 
 export const Post: react.FC<IDataPost> = (props) => {
@@ -237,6 +248,8 @@ export const Post: react.FC<IDataPost> = (props) => {
     const [localLike, setLocalLike] = react.useState(0);
     const [localComments, setLocalComments] = react.useState(0);
     const [localDonations, setLocalDonations] = react.useState(0);
+    const [localLiked, setLocalLiked] = react.useState(props.liked);
+    const [footerState, setFooterState] = react.useState<'null' | 'comments' | 'donation'>('null')
 
     var files = props.file.split(';');
     var images = files.filter(imgCondition)
@@ -298,24 +311,27 @@ export const Post: react.FC<IDataPost> = (props) => {
             }
             <PostControlls
                 setComments={(e) => {
-                    if (e) setSection('comments')
-                    else setSection('none')
+                    if (e) setFooterState('comments')
+                    else setFooterState('null')
                 }}
                 setTip={(e) => {
-                    if (e) setSection('tip')
-                    else setSection('none')
+                    if (e) setFooterState('donation')
+                    else setFooterState('null')
                 }}
-                setLike={(e) => {
+                setLike={async (e) => {
                     if (e) {
-                        likePost(
+                        var res = await likePost(
                             signAndExecuteTransactionBlock,
                             props.addr,
                             PROFILE_ADDR()!
                         )
-                        if (!props.liked) {
-                            setLocalLike(1);
-                        } else {
-                            setLocalLike(0);
+                        if (!res.errors) {
+                            if (!props.liked) {
+                                setLocalLike(1);
+                            } else {
+                                setLocalLike(0);
+                            }
+                            setLocalLiked(true);
                         }
                     } else {
                         unlikePost(
@@ -333,10 +349,13 @@ export const Post: react.FC<IDataPost> = (props) => {
                 localLikes={localLike}
                 localComments={localComments}
                 localDonations={localDonations}
+                localLiked={localLiked}
+                localCommentsOpen={footerState == 'comments'}
+                localDonationOpen={footerState == 'donation'}
                 donations={props.donated ? props.donated : 0}
             />
             {
-                section == 'comments' ? <CommentSection 
+                footerState == 'comments' ? <CommentSection 
                 postId={props.addr}
                 comments={props.comments}
                 localCommentsIncrementor={() => {
@@ -345,7 +364,7 @@ export const Post: react.FC<IDataPost> = (props) => {
                 /> : <></>
             }
             {
-                section == 'tip' ? <TipSection 
+                footerState == 'donation' ? <TipSection 
                     postAddr={props.addr}
                     localDonationsIncrementer={(donations) => {
                         setLocalDonations(localDonations+donations);

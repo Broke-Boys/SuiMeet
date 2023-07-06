@@ -22,7 +22,7 @@
     justify-content: space-between;
 }
 
-#file{
+#file, #file-update{
     width: 0px;
     height: 0px;
 }

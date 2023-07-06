@@ -19,7 +19,7 @@ import { getFollowers } from '../../../client/getFollowers';
 import { createPost } from '../../../client/createPost';
 import { PROFILE_ADDR } from '../../../client/config';
 import { IDataPost, getFeed } from '../../../service/getFeed';
-import { changePost, feedFetchedTypeSelector, postSelector } from '../../../store/posts';
+import { changePost, feedFetchedTypeSelector, feedTypeSelector, postSelector, setType } from '../../../store/posts';
 import { useSelector, useDispatch } from 'react-redux';
 import { createPostAction, getPostsAction, getPostsActionNotFirst } from '../../../store/posts/actions';
 import { getProfile } from '../../../client/getProfile';
@@ -87,7 +87,7 @@ export const PostCreation: react.FC<IPostCreation> = (props) => {
     if (props.postId) {
         post = posts.filter(e => e.messageAddr == props.postId)[0];
         startImages = post.file.split(';').filter(imgCondition);
-        startFiles = post.file.split(';').filter(e => !imgCondition(e))
+        startFiles = post.file.split(';').filter(e => !imgCondition(e) && e.length)
     }
     const [text, setText] = react.useState(post ? post.content : '');
     const dispatch = useDispatch();
@@ -99,7 +99,7 @@ export const PostCreation: react.FC<IPostCreation> = (props) => {
 
     
     return <div className="post_insert">
-    <Textarea 
+    <Textarea
         onChange={(e) => {
             setText(e);
         }}
@@ -109,7 +109,7 @@ export const PostCreation: react.FC<IPostCreation> = (props) => {
     <div className='posting-controlls'>
         <div className="uploads">
             <div className="image-upl">
-                <label htmlFor="file" className='file_input'>
+                <label htmlFor={props.postId ? 'file-update' : 'file'} className='file_input'>
                     {
                         !imageLoading ? <Image /> : <Puff 
                             height="18"
@@ -123,7 +123,7 @@ export const PostCreation: react.FC<IPostCreation> = (props) => {
                     }
                     
                 </label>
-                <input type="file" id='file' onChange={async (e) => {
+                <input type="file" id={props.postId ? 'file-update' : 'file'} onChange={async (e) => {
                     setImageLoading(true);
                     var links = [];
                     for (var i = 0; i < e.target.files?.length!; ++i) {
@@ -158,7 +158,8 @@ export const PostCreation: react.FC<IPostCreation> = (props) => {
                         text,
                         filesStr,
                         props.postId
-                    ).then(() => {
+                    ).then((e) => {
+                        if (e.error) return; 
                         var changeData = {
                             postId: props.postId!,
                             files: filesStr,
@@ -187,13 +188,21 @@ export const PostCreation: react.FC<IPostCreation> = (props) => {
                                 messageAddr: ''
                             },
                             signAndExecuteTransactionBlock: signAndExecuteTransactionBlock  
-                            }
+                        }
                             
                         ) as any
-                    )
-                    setText('')
-                    setFiles([])
-                    setImages([])
+                    ).then(() => {
+                        setTimeout(() => {
+                            if (localStorage.getItem('errorCreatePost')) {
+                                localStorage.removeItem('errorCreatePost');
+                                return;
+                            }
+                            setText('')
+                            setFiles([])
+                            setImages([])
+                        }, 100)
+                    })
+                    
                 }
             }}
         />
@@ -230,6 +239,7 @@ const MainPage: react.FC = () => {
     const profile = useSelector(profileSelector);
     const dispatch = useDispatch();
     const {currentAccount} = useWalletKit();
+    const feedType = useSelector(feedTypeSelector);
 
     if (fetchedType == 'none' && currentAccount?.address) {
         dispatch(
@@ -258,9 +268,11 @@ const MainPage: react.FC = () => {
 
     if (feedFetchedType == 'none') {
         dispatch(
-            getPostsAction() as any
+            getPostsAction(feedType) as any
         )
     }
+
+    console.log(feedFetchedType)
 
     return <div className='main__content' id='main-content'>
     <div className="post-insert__container">
@@ -269,9 +281,15 @@ const MainPage: react.FC = () => {
     
     <PostHeader 
         news={posts.length} 
-        postTypeChange={(e) => {}}
+        postTypeChange={(e) => {
+            dispatch(
+                setType(e)
+            )
+        }}
     />
-    <InfiniteScroll
+    {
+        feedType == 'All' ?
+        <InfiniteScroll
         dataLength={posts.length}
         next={async () => {
             await dispatch(
@@ -296,7 +314,30 @@ const MainPage: react.FC = () => {
         {
             posts.map((e, idx) => <div key={idx} style={{'marginTop': 10}}><Post {...e} /></div>)
         }
-    </InfiniteScroll>
+    </InfiniteScroll> :
+    <>
+    {
+        feedFetchedType == 'fetching' ? <div style={{
+            display: 'flex', 
+            justifyContent: 'center', 
+            marginTop: 20
+        }}>
+            <Puff 
+                height={80}
+                width={80}
+                radius={1}
+                color={'#FE754D'}
+            />
+        </div> :
+        posts.length ?
+        posts.map((e, idx) => <div key={idx} style={{'marginTop': 10}}>
+            <Post {...e} />
+            </div>
+        ) : <span style={{textAlign: 'center', color: '#504D62', fontWeight: 'bold'}}>There is no any posts</span>
+    }
+    </>
+    }
+    
 
 </div>
 }

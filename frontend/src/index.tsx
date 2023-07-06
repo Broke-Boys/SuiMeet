@@ -8,6 +8,7 @@ import { Provider } from 'react-redux';
 import {store} from './store';
 import {ConfigProvider} from 'antd';
 import { getRegistryAddress } from './client/getRegistryAddress';
+import { rankPost } from './client/rankPosts';
 
 getRegistryAddress().then(e => {
     localStorage.setItem('registryAddr', e);

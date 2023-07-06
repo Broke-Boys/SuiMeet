@@ -15,19 +15,23 @@ export const createPost = async (
     files: string,
     profileAddr: string
 ) => {
-    try{
-        const tx = new TransactionBlock();
-        tx.moveCall({
-          target: `${CONTRACT_ADDRESS}::meet::create_post`,
-          arguments: [
-            tx.pure(profileAddr), tx.pure(text), tx.pure(files), tx.pure(SUI_CLOCK_OBJECT_ID)
-          ],
+    const tx = new TransactionBlock();
+    tx.moveCall({
+        target: `${CONTRACT_ADDRESS}::meet::create_post`,
+        arguments: [
+        tx.pure(profileAddr), tx.pure(text), tx.pure(files), tx.pure(SUI_CLOCK_OBJECT_ID)
+        ],
+    });
+    try {
+        await signAndExecuteTransactionBlock({
+            transactionBlock: tx
         });
-        const result = await signAndExecuteTransactionBlock({
-          transactionBlock: tx,
-        });
-    
-    } catch (error) {
-        console.error(error);
+        return {
+            error: false
+        }
+    } catch {
+        return {
+            error: true
+        }
     }
 }

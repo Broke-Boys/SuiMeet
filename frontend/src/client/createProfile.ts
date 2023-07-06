@@ -67,9 +67,14 @@ export const createProfile = async (
         });
         var profileAddress = (objects as any).data[0].data.objectId
         localStorage.setItem('profileAddr', profileAddress);
-    
+        return {
+            error: false
+        }
       } catch (error) {
         console.error(error);
+        return {
+            error: true
+        }
       }
     
 } 

@@ -1,5 +1,5 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
-import { IDataPost, blockchainPostAdaptee, getFeed } from '../../service/getFeed';
+import { IDataPost, blockchainPostAdaptee, getFeed, getFriendsFeed } from '../../service/getFeed';
 import { createPost } from '../../client/createPost';
 import { PROFILE_ADDR } from '../../client/config';
 import { likePost } from '../../client/likePost';
@@ -8,9 +8,15 @@ import { allPostDetails } from '../../client/postDetail';
 
 export const getPostsAction = createAsyncThunk(
     'posts/getPostAction',
-    async () => {
-        //console.log("Fuuuck")
-        var feeds = await getFeed(5, true);
+    async (type?: "All" | "Followings") => {
+        if (!type) type = 'All';
+
+        if (type == 'All') {
+            var feeds = await getFeed(5, true);
+        }
+        else {
+            var feeds = await getFriendsFeed();
+        }
         //console.log(feeds)
         return feeds;
     }
@@ -36,12 +42,16 @@ export const createPostAction = createAsyncThunk(
     async (
         data: ICreatePostAction
     ) => {
-        await createPost(
+        var ans = await createPost(
             data.signAndExecuteTransactionBlock,
             data.post.content,
             data.post.file,
             PROFILE_ADDR()!
         );
+        if (ans.error) {
+            localStorage.setItem('errorCreatePost', 'true');
+            return null
+        }
         await new Promise(r => setTimeout(r, 2000));
         var posts = await authorPosts(PROFILE_ADDR()!, 1);
         //console.log(posts)
