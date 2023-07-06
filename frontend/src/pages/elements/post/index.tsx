@@ -24,11 +24,15 @@ import { makeDonate } from '../../../client/makeDonation';
 import {useSelector} from 'react-redux';
 import { profileSelector } from '../../../store/profile';
 import {Avatar, message} from 'antd';
+import { useNavigate } from 'react-router-dom';
 
 
 const AuthorPost: react.FC<IDataShortProfile & {timestamp: string}> = (props) => {
+    const navigate = useNavigate();
     return <div className='author__container'>
-        <div className="author">
+        <div className="author" onClick={() => {
+            navigate('/user/'+props.fullWallet)
+        }}>
             <Avatar src={props.imageUrl} size={40}/>
             <span>{props.name}</span>
         </div>

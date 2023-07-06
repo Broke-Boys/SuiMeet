@@ -23,7 +23,9 @@ const ProfilePosts: react.FC = () => {
     
     return <>
         {
-            posts.map(e => <Post {...e}/>)
+            posts.length ? 
+            posts.map(e => <Post {...e}/>) :
+            <span style={{textAlign: 'center', color: '#504D62', fontWeight: 'bold'}}>No posts yet</span>
         }
     </>
 }

@@ -361,9 +361,23 @@ export const ProfileView: react.FC = () => {
         </div>
         <div className="posts__container-profile">
         {
+            type == 'fetching' ? 
+            <div style={{
+                display: 'flex', 
+                justifyContent: 'center', 
+                marginTop: 20
+            }}>
+                <Puff 
+                    height={80}
+                    width={80}
+                    radius={1}
+                    color={'#FE754D'}
+                />
+            </div> : 
+            posts.length ?
             posts.map((e) => {
                 return <Post {...e}/>
-            })
+            }) : <span style={{textAlign: 'center', color: '#504D62', fontWeight: 'bold'}}>No posts yet</span>
         }
         </div>
 
@@ -555,7 +569,9 @@ const Subs: react.FC = () => {
 
     return <div className='subs__container'>
         {
-            followings.map(e => <ExtendedProfile {...e}/>)
+            followings.length ?
+            followings.map(e => <ExtendedProfile {...e}/>):
+            <span style={{textAlign: 'center', color: '#504D62', fontWeight: 'bold'}}>You don't subscribe to any author</span>
         }
     </div>
 }
