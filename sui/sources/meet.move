@@ -18,9 +18,9 @@ module sui_meet::meet
 
     // CONSTS
 
-    const MAX_MESSAGE_LEN: u64 = 2000;
+    const MAX_MESSAGE_LEN: u64 = 5000;
     const MAX_FILES_AMOUNT: u64 = 10;
-    const MAX_COMMENTS_AMOUNT: u64 = 300;
+    const MAX_COMMENTS_AMOUNT: u64 = 1000;
 
     // ERRORS
 
@@ -257,9 +257,7 @@ module sui_meet::meet
         ctx: &mut TxContext
     )  {
         let text_len = vector::length(&text);
-        let files_amount = vector::length(&text);
         assert!(text_len > 0 && text_len <= MAX_MESSAGE_LEN, E_INVALID_TEXT_LENGTH);
-        assert!(files_amount > 0 && files_amount <= MAX_FILES_AMOUNT, E_INVALID_AMOUNT_FILES);
 
         let profile_addr = object::id_to_address(&object::id(profile));
 
