@@ -8,6 +8,9 @@ import {
     profilePostsSelector
 } from '../../../store/profile';
 import { useNavigate } from 'react-router-dom';
+import {CopyToClipboard} from 'react-copy-to-clipboard';
+import {message} from 'antd';
+
 
 interface ISepBlock{
     value: string;
@@ -28,9 +31,10 @@ export const ProfileDetail: react.FC = () => {
     const followings = useSelector(followingsSelector);
     const posts = useSelector(profilePostsSelector);
     const navigate = useNavigate();
-
+    const [messageApi, contextHolder] = message.useMessage();
 
     return <div className='profile-detail__container'>
+        {contextHolder}
         <div style={{
             height: 170,
             overflow: 'hidden',
@@ -45,7 +49,15 @@ export const ProfileDetail: react.FC = () => {
             {profile.name}
         </div>
         <div className="profile-tag">
-            {profile.wallet}
+            <CopyToClipboard 
+                text={profile.fullWallet}
+                onCopy={() => {
+                    messageApi.info('address copied to clipboard!')
+                }}
+                >
+                <span style={{cursor: 'pointer'}}>{profile.wallet}</span>
+            </CopyToClipboard>
+            
         </div>
         <div className="seps-info">
             <SepBlock 

@@ -25,6 +25,7 @@ import {useSelector} from 'react-redux';
 import { profileSelector } from '../../../store/profile';
 import {Avatar, message} from 'antd';
 import { useNavigate } from 'react-router-dom';
+import { PostEdit } from '../icons/postEdit';
 
 
 const AuthorPost: react.FC<IDataShortProfile & {timestamp: string}> = (props) => {
@@ -263,7 +264,7 @@ export const Post: react.FC<IDataPost> = (props) => {
     
 
     return <Popover 
-        open={!isModalOpen && popoverOpen && props.author.fullWallet == PROFILE_ADDR()}
+        open={false}
         onOpenChange={setPopoverOpen}
         content={<div>
         <Button 
@@ -292,15 +293,32 @@ export const Post: react.FC<IDataPost> = (props) => {
             />
         </Modal>
         <div className='post__container'>
-            <AuthorPost {...props.author} timestamp={props.timestamp!}/>
+            <div className="author-edit">
+                {
+                    props.author.fullWallet == PROFILE_ADDR()! ?
+                    <div 
+                        style={{cursor: 'pointer'}}
+                        onClick={() => {
+                            setIsModalOpen(true);
+                        }}
+                    ><PostEdit /></div> : <></>
+                }
+                
+                <div className='post-author__content'>
+                    <AuthorPost {...props.author} timestamp={props.timestamp!}/>
+                </div>
+
+            </div>
             <PostBody {...props}/>
             {
                 images.length ?
-                <ReactPhotoCollage 
+                <div style={{marginLeft: 50}}>
+                    <ReactPhotoCollage 
                     width={collageSize}
                     height={
                         ['250px', '170px']
                     }
+                    
                     layout={ images.length == 1 ?  [1] : [1, images.length-1]}
                     photos={images.map(
                         (e) => {
@@ -310,6 +328,7 @@ export const Post: react.FC<IDataPost> = (props) => {
                         }
                     )}
                 />
+                </div> 
                 
                 : <></>
             }

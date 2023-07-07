@@ -7,10 +7,22 @@
     gap: 10px;
 }
 
+.author-edit{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
 .author__container{
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex: 100%;
+}
+.post-author__content{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
 }
 .author{
     display: flex;

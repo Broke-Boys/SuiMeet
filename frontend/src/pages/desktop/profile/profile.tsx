@@ -16,6 +16,8 @@ import { getFollowers } from '../../../client/getFollowers'
 import { postSelector } from '../../../store/posts'
 import { ExtendedProfile } from '../../elements/extendedProfile'
 import {Avatar} from 'antd';
+import CopyToClipboard from 'react-copy-to-clipboard';
+import {message} from 'antd'
 
 
 const ProfilePosts: react.FC = () => {
@@ -59,8 +61,10 @@ export const Profile: react.FC = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const {signAndExecuteTransactionBlock} = useWalletKit();
+    const [messageApi, contextHolder] = message.useMessage()
+
     const [followed, setFollowed] = react.useState(localStorage.getItem('followings') ? 
-    localStorage.getItem('followings')?.split(';').includes(addr!) : false)
+        localStorage.getItem('followings')?.split(';').includes(addr!) : false)
 
     var followingsEnabled = !(PROFILE_ADDR() == addr);
 
@@ -99,6 +103,7 @@ export const Profile: react.FC = () => {
     
 
     return <div className='centered'>
+        {contextHolder}
         <div className="profile__container">
             <div className="profile-info">
                 <Avatar 
@@ -109,7 +114,17 @@ export const Profile: react.FC = () => {
                     {profile.name}
                 </div>
                 <div className="account">
-                    {profile.wallet}
+                    <CopyToClipboard 
+                        text={profile.fullWallet}
+                        onCopy={() => {
+                            messageApi.info('Address copy to clipboard!')
+                        }}
+                    >
+                        <span style={{cursor: 'pointer'}}>
+                            {profile.wallet}
+                        </span>
+                    </CopyToClipboard>
+                    
                 </div>
                 <div className="short-description">
                     {profile.description}
